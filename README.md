@@ -3,9 +3,9 @@ Tampermonkey script for creating branch name out of the jira id and name.
 
 # Installaion
 * Download Tampermonkey [here](https://chrome.google.com/webstore/detail/tampermonkey/dhdgffkkebhmkfjojejmpbldmpobfkfo?hl=en)
-* once installed, open the app `Dashborad`
+* once installed, open the app `Dashboard`
 
-  ![Dashborad](./1.PNG "Dashborad")
+  ![Dashboard](./1.PNG "Dashboard")
 
 * click on `Utilities` on the top right hand side
 
