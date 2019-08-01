@@ -19,10 +19,10 @@ Tampermonkey script for creating branch name out of the jira id and name.
 
   ![Install](./4.PNG "Install")
   
-* go to jira story and you will see the Create branch button next to the jira id
+* go to jira story and you will see the `Create branch name` button next to the jira id
 
-  ![](./5.PNG)
+  ![Create branch name](./5.PNG "Create branch name")
 
-  ![](./6.PNG)
+  ![Create branch name](./6.PNG "Create branch name")
 
-now the the branch name is in your clipbord: `PAP-252-some-story-name`
+now the the branch name is in your clipboard: `PAP-252-some-story-name`
