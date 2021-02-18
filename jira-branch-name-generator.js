@@ -11,15 +11,17 @@
 // ==/UserScript==
 
 function GM_addStyle(css) {
-  const style = document.getElementById("GM_addStyleBy8626") || (function() {
-    const style = document.createElement('style');
-    style.type = 'text/css';
-    style.id = "GM_addStyleBy8626";
-    document.head.appendChild(style);
-    return style;
-  })();
-  const sheet = style.sheet;
-  sheet.insertRule(css, (sheet.rules || sheet.cssRules || []).length);
+    const style =
+        document.getElementById("GM_addStyleBy8626") ||
+        (function () {
+            const style = document.createElement("style");
+            style.type = "text/css";
+            style.id = "GM_addStyleBy8626";
+            document.head.appendChild(style);
+            return style;
+        })();
+    const sheet = style.sheet;
+    sheet.insertRule(css, (sheet.rules || sheet.cssRules || []).length);
 }
 
 GM_addStyle(`
@@ -72,13 +74,15 @@ GM_addStyle(`
 }
 `);
 
-(function() {
-    'use strict';
-    const lastBreadcrumb = _.last(document.querySelectorAll('div[class*="BreadcrumbsItem__BreadcrumbsItemElement"]'));
+(function () {
+    "use strict";
+    const lastBreadcrumb = _.last(
+        document.querySelectorAll('div[data-test-id*="breadcrumbs"]')
+    );
 
-    function createBranchName(){
-        const jiraTitle = _.first(document.querySelectorAll('h1')).innerText
-        const jiraId = lastBreadcrumb.innerText
+    function createBranchName() {
+        const jiraTitle = _.first(document.querySelectorAll("h1")).innerText;
+        const jiraId = lastBreadcrumb.innerText;
 
         copy(`${jiraId}-${_.kebabCase(jiraTitle)}`);
     }
@@ -97,9 +101,11 @@ GM_addStyle(`
             </div>
     `);
 
-    $('#create-branch-name').on('click', () => {
+    $("#create-branch-name").on("click", () => {
         createBranchName();
-        $(".copy-branch-btn-wrapper").append(`<span id="copied-txt" style="position: absolute; top: 0; left: 60%; color: green;">Copied</span>`);
-        setTimeout(() => $('#copied-txt').remove(), 3000)
-    })
+        $(".copy-branch-btn-wrapper").append(
+            `<span id="copied-txt" style="position: absolute; top: 0; left: 60%; color: green;">Copied</span>`
+        );
+        setTimeout(() => $("#copied-txt").remove(), 3000);
+    });
 })();
