@@ -74,9 +74,23 @@ GM_addStyle(`
 }
 `);
 
+function getElementByXpath(path) {
+    return document.evaluate(
+        path,
+        document,
+        null,
+        XPathResult.FIRST_ORDERED_NODE_TYPE,
+        null
+    ).singleNodeValue;
+}
+
 (function () {
     "use strict";
-    const lastBreadcrumb = _.last(
+
+    const lastBreadcrumb = getElementByXpath(
+        '//*[@id="jira-issue-header"]//a/span[contains(., "-")]'
+    );
+    const breadcrumbsContainer = _.last(
         document.querySelectorAll('div[data-test-id*="breadcrumbs"]')
     );
 
@@ -94,7 +108,7 @@ GM_addStyle(`
         document.execCommand("copy");
     }
 
-    $(lastBreadcrumb).append(`
+    $(breadcrumbsContainer).append(`
             <div class="copy-branch-btn-wrapper">
                <input type="button" class="create-branch-btn" value="Copy branch name" id="create-branch-name">
                <textarea style="opacity: 0" id="copy-branch-name">
