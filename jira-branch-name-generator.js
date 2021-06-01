@@ -3,7 +3,7 @@
 // @namespace    http://tampermonkey.net/
 // @version      0.1
 // @author       You
-// @match        https://*.atlassian.net/browse/*
+// @match        https://*.atlassian.net/*
 // @require http://code.jquery.com/jquery-latest.js
 // @require https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js
 // @require https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.15/lodash.min.js
@@ -74,29 +74,20 @@ GM_addStyle(`
 }
 `);
 
-function getElementByXpath(path) {
-    return document.evaluate(
-        path,
-        document,
-        null,
-        XPathResult.FIRST_ORDERED_NODE_TYPE,
-        null
-    ).singleNodeValue;
-}
-
-(function () {
+function addBranchButton() {
     "use strict";
 
-    const lastBreadcrumb = getElementByXpath(
-        '//*[@id="jira-issue-header"]//a/span[contains(., "-")]'
-    );
-    const breadcrumbsContainer = _.last(
+    const lastBreadcrumbsContainer = _.last(
         document.querySelectorAll('div[data-test-id*="breadcrumbs"]')
     );
 
     function createBranchName() {
-        const jiraTitle = _.first(document.querySelectorAll("h1")).innerText;
-        const jiraId = lastBreadcrumb.innerText;
+        const jiraTitle = _.first(
+            document.querySelectorAll(
+                'h1[data-test-id*="issue.views.issue-base.foundation.summary.heading"]'
+            )
+        ).innerText;
+        const jiraId = lastBreadcrumbsContainer.innerText;
 
         copy(`${jiraId}-${_.kebabCase(jiraTitle)}`);
     }
@@ -108,8 +99,13 @@ function getElementByXpath(path) {
         document.execCommand("copy");
     }
 
-    $(breadcrumbsContainer).append(`
-            <div class="copy-branch-btn-wrapper">
+    const existingButton = document.querySelector(".branch-name-ge");
+    if (!_.isNil(existingButton)) {
+        existingButton.remove();
+    }
+
+    $(lastBreadcrumbsContainer).append(`
+            <div class="copy-branch-btn-wrapper branch-name-ge">
                <input type="button" class="create-branch-btn" value="Copy branch name" id="create-branch-name">
                <textarea style="opacity: 0" id="copy-branch-name">
             </div>
@@ -122,4 +118,26 @@ function getElementByXpath(path) {
         );
         setTimeout(() => $("#copied-txt").remove(), 3000);
     });
-})();
+}
+addBranchButton();
+
+let oldURL = "";
+let currentURL = window.location.href;
+function checkURLChange(currentURL) {
+    if (currentURL != oldURL) {
+        addBranchButton();
+        oldURL = currentURL;
+    } else {
+        const branchNameGeButton = document.querySelector(".branch-name-ge");
+        if (!branchNameGeButton) {
+            addBranchButton();
+        }
+    }
+
+    oldURL = window.location.href;
+    setTimeout(function () {
+        checkURLChange(window.location.href);
+    }, 1000);
+}
+
+checkURLChange();
