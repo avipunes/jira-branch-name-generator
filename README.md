@@ -1,3 +1,5 @@
+
+
 # jira-branch-name-generator
 Tampermonkey script for creating branch name out of the jira id and name.
 
@@ -19,7 +21,7 @@ Tampermonkey script for creating branch name out of the jira id and name.
 
   ![Install](./4.PNG "Install")
   
-* go to jira story and you will see the `Create branch name` button next to the jira id
+* go to jira story and you will see the `Copy branch name` button next to the jira id
 
   ![Create branch name](./5.PNG "Create branch name")
 
